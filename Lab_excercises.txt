@@ -2,7 +2,7 @@
 Q1: Create a department table with the following columns: dept_id (PK), dept_name
 (not null), dept_location.
 
-	create table department_21(dept_id int primary key, dept_name varchar(25) not null, dept_location varchar(25));
+create table department_21(dept_id int primary key, dept_name varchar(25) not null, dept_location varchar(25));
 	
 Q2: Write a SQL query to create an employee table with the following columns: emp_id
 (PK), emp_name, emp_salary (>20k), emp_join_date (between June 1998- till
@@ -21,11 +21,163 @@ DESC department_21;
 DESC employee_21;
 DESC support_21;
 
+SQL> DESC support_21;
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID					   NOT NULL NUMBER(38)
+ EMP_ID 					    NUMBER(38)
+ DEPT_ID					    NUMBER(38)
+ STATUS 					    VARCHAR2(5)
+
+SQL> DESC employee_21;
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID 				   NOT NULL NUMBER(38)
+ EMP_NAME					    VARCHAR2(25)
+ EMP_SALARY					    NUMBER(10,2)
+ EMP_JOIN_DATE					    DATE
+ DEPT_ID					    NUMBER(38)
+
+
+SQL> DESC support_21;
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID					   NOT NULL NUMBER(38)
+ EMP_ID 					    NUMBER(38)
+ DEPT_ID					    NUMBER(38)
+ STATUS 					    VARCHAR2(5)
+
+
+
 Q5: Alter the employee table to add a new column emp_email of type VARCHAR(100).
 
 Alter table employee_21 add emp_email varchar(100);
 
+SQL> DESC employee_21;
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID 				   NOT NULL NUMBER(38)
+ EMP_NAME					    VARCHAR2(25)
+ EMP_SALARY					    NUMBER(10,2)
+ EMP_JOIN_DATE					    DATE
+ DEPT_ID					    NUMBER(38)
+ EMP_EMAIL					    VARCHAR2(100)
+
+
 Q6: Drop the support table if it is no longer required.
 
 drop table support_21;
+Table dropped.
+
+Q7: Modify the emp_salary column in the employee table to allow values up to
+DECIMAL(12, 2).
+
+Alter table employee_21 modify emp_salary decimal(12,2);
+
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID 				   NOT NULL NUMBER(38)
+ EMP_NAME					    VARCHAR2(25)
+ EMP_SALARY					    NUMBER(12,2)
+ EMP_JOIN_DATE					    DATE
+ DEPT_ID					    NUMBER(38)
+ EMP_EMAIL					    VARCHAR2(100)
+
+
+Q8: Add five suitable records to department table (Let value of dept_id starts with 101).
+
+insert intO department_21 values(101,'MCA','SOUTH BLOCK');
+insert intO department_21 values(102,'MBA','SOUTH BLOCK');
+insert intO department_21 values(103,'ECE','NORTH BLOCK');
+insert intO department_21 values(104,'EEE','NORTH BLOCK');
+insert intO department_21 values(105,'CIVIL','NORTH BLOCK');
+
+ANS):
+SQL> SELECT * FROM DEPARTMENT_21;
+
+   DEPT_ID DEPT_NAME		     DEPT_LOCATION
+---------- ------------------------- -------------------------
+       101 MCA			     SOUTH BLOCK
+       102 MBA			     SOUTH BLOCK
+       103 ECE			     NORTH BLOCK
+       104 EEE			     NORTH BLOCK
+       105 CIVIL		     NORTH BLOCK
+       
+Q9: Insert the following employee record into the employee table: emp_id = 1, emp_name
+= 'John Doe', emp_salary = 60000, emp_join_date = '15-05-2021', dept_id
+= 101.
+
+INSERT INTO employee_21 VALUES (1, 'John Doe', 60000, TO_DATE('2021-06-03', 'YYYY-MM-DD'), 101, 'john@gmail.com');
+
+SQL> select * from employee_21;
+
+    EMP_ID 	EMP_NAME	EMP_SALARY 	EMP_JOIN_    DEPT_ID	EMP_EMAIL
+---------- ------------------------- ---------- --------- ----------	----------
+
+	 1 	John Doe	60000 		03-JUN-21	 101	john@gmail.com
+
+Q10: Insert multiple records of employees into the employee table with emp_id, emp_name,
+emp_salary, and dept_id.
+
+insert intO employee_21 values(2,'Sanju',50000,TO_DATE('2021-06-15', 'YYYY-MM-DD'), 102, 'sanju@gmail.com');
+insert intO employee_21 values(3,'Abhi',65000,TO_DATE('2021-10-03', 'YYYY-MM-DD'), 103, 'abhi@gmail.com');
+insert intO employee_21 values(4,'Esther',65000,TO_DATE('2022-12-07', 'YYYY-MM-DD'), 104, 'esther@gmail.com');
+insert intO employee_21 values(5,'Cijo',60000,TO_DATE('2022-04-10', 'YYYY-MM-DD'), 105, 'cijo@gmail.com');
+
+ SQL> select * from employee_21;
+
+    EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+	 1 John Doe			  60000 03-JUN-21	 101 john@gmail.com
+	 2 Sanju			  50000 15-JUN-21	 102 sanju@gmail.com
+	 3 Abhi 			  65000 03-OCT-21	 103 abhi@gmail.com
+	 4 Esther			  65000 07-DEC-22	 104 esther@gmail.com
+	 5 Cijo 			  60000 10-APR-22	 105 cijo@gmail.com
+
+Q11: Update the salary of the employee with emp_id = 1 by increasing it by 10%.
+
+update employee_21 set emp_salary=emp_salary*1.10 where emp_id=1;
+
+SQL> select * from employee_21;
+
+    EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+	 1 John Doe			  66000 03-JUN-21	 101 john@gmail.com
+	 2 Sanju			  50000 15-JUN-21	 102 sanju@gmail.com
+	 3 Abhi 			  65000 03-OCT-21	 103 abhi@gmail.com
+	 4 Esther			  65000 07-DEC-22	 104 esther@gmail.com
+	 5 Cijo 			  60000 10-APR-22	 105 cijo@gmail.com
+
+Q12: Delete the record of the employee with emp_id = 1.
+
+delete from employee_21 where emp_id=1;
+
+SQL> select * from employee_21;
+
+    EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+	 2 Sanju			  50000 15-JUN-21	 102 sanju@gmail.com
+	 3 Abhi 			  65000 03-OCT-21	 103 abhi@gmail.com
+	 4 Esther			  65000 07-DEC-22	 104 esther@gmail.com
+	 5 Cijo 			  60000 10-APR-22	 105 cijo@gmail.com
+
+Q13: Update the emp_salary of employees in dept_id = 101 to 10% more if their current
+salary is less than 50000.
+
+update employee_21 set emp_salary=emp_salary*1.10 where dept_id=101 and emp_salary<50000;
+0 rows updated.
+update employee_21 set emp_salary=emp_salary*1.10 where dept_id=102 and emp_salary<50000;
+update employee_21 set emp_salary=45000 where emp_id=2;
+update employee_21 set dept_id=101 where emp_id=2;
+
+SQL> select * from employee_21;
+
+    EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+	 2 Sanju			  49500 15-JUN-21	 101 sanju@gmail.com
+	 3 Abhi 			  65000 03-OCT-21	 103 abhi@gmail.com
+	 4 Esther			  65000 07-DEC-22	 104 esther@gmail.com
+	 5 Cijo 			  60000 10-APR-22	 105 cijo@gmail.com
+
+
 
