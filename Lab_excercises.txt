@@ -3,20 +3,21 @@ Q1: Create a department table with the following columns: dept_id (PK), dept_nam
 (not null), dept_location.
 
 create table department_21(dept_id int primary key, dept_name varchar(25) not null, dept_location varchar(25));
-Table created;
+
+Table created
 	
 Q2: Write a SQL query to create an employee table with the following columns: emp_id
 (PK), emp_name, emp_salary (>20k), emp_join_date (between June 1998- till
 date), dept_id (FK).
 	
 create table Employee_21(emp_id INT PRIMARY KEY,emp_name VARCHAR(25),emp_salary numeric(10,2) CHECK (emp_salary>20000),emp_join_date DATE CHECK(emp_join_date >= date '1998-06-01'),dept_id INT,FOREIGN KEY(dept_id) REFERENCES department_21(dept_id));
+
 Table created;
 	
 Q3: Create table support table with s_id (PK), emp_id (FK), dept_id (FK), status
 (Yes/No).
 
 create table support_21(s_id int primary key, emp_id int, dept_id int, status varchar(5) check (status IN('Yes','No')),foreign key(emp_id ) references employee_21(emp_id),FOREIGN KEY(dept_id) REFERENCES department_21(dept_id));
-Table created;
 
 Q4: Display the schema of the above three tables.
 
@@ -24,13 +25,14 @@ DESC department_21;
 DESC employee_21;
 DESC support_21;
 
-SQL> DESC support_21;
- Name					   Null?    Type
- ----------------------------------------- -------- ----------------------------
- S_ID					   NOT NULL NUMBER(38)
- EMP_ID 					    NUMBER(38)
- DEPT_ID					    NUMBER(38)
- STATUS 					    VARCHAR2(5)
+SQL> desc department_21;
+ Name														   Null?    Type
+ ---------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ DEPT_ID													   NOT NULL NUMBER(38)
+ DEPT_NAME													   NOT NULL VARCHAR2(25)
+ DEPT_LOCATION														    VARCHAR2(25)
+
+
 
 SQL> DESC employee_21;
  Name					   Null?    Type
@@ -182,5 +184,152 @@ SQL> select * from employee_21;
 	 4 Esther			  65000 07-DEC-22	 104 esther@gmail.com
 	 5 Cijo 			  60000 10-APR-22	 105 cijo@gmail.com
 
+Q14: Write a SELECT query to list all employees with their emp_id, emp_name, and
+emp_salary.
+
+select emp_id,emp_name,emp_salary from employee_21;
+
+SQL> select emp_id,emp_name,emp_salary from employee_21;
+
+    EMP_ID EMP_NAME		     EMP_SALARY
+---------- ------------------------- ----------
+	 2 Sanju			  49500
+	 3 Abhi 			  65000
+	 4 Esther			  65000
+	 5 Cijo 			  60000
 
 
+Q15: Retrieve the emp_name, emp_salary, and emp_join_date for employees whose
+salary is greater than 50000.
+
+select emp_name,emp_salary,emp_join_date from employee_21 where emp_salary>50000;
+
+EMP_NAME		  EMP_SALARY EMP_JOIN_
+------------------------- ---------- ---------
+Abhi			       65000 03-OCT-21
+Esther			       65000 07-DEC-22
+Cijo			       60000 10-APR-22
+
+Q16: List employees in the employee table ordered by emp_salary in descending order
+
+select * from employee_21 order by emp_salary DESC;
+
+    EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID	EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- --------------
+	 3 Abhi 			  65000 03-OCT-21	 103	abhi@gmail.com
+	 4 Esther			  65000 07-DEC-22	 104	esther@gmail.com
+	 5 Cijo 			  60000 10-APR-22	 105	cijo@gmail.com
+	 2 Sanju			  49500 15-JUN-21	 101	sanju@gmail.com
+
+Q17: Retrieve all employees' names and salaries who joined after 01-01-2020.
+
+select emp_name,emp_salary from employee_21 where emp_join_date > TO_DATE('2020-01-01', 'YYYY-MM-DD');
+
+EMP_NAME		  EMP_SALARY
+------------------------- ----------
+Sanju			       49500
+Abhi			       65000
+Esther			       65000
+Cijo			       60000
+
+Q18: Write a query to select all employees whose name starts with "J".
+
+SQL> update employee_21 set emp_name='Jijo' where emp_id=5;
+
+SQL> select emp_name from employee_21 where emp_name like 'J%'; 
+
+EMP_NAME
+-------------------------
+Jijo
+
+Q19: Select the emp_name and emp_salary for employees whose salary is between 40000 and 60000.
+
+Select emp_name,emp_salary from employee_21 where emp_salary between 40000 and 60000; 
+
+EMP_NAME		  EMP_SALARY
+------------------------- ----------
+Sanju			       49500
+Jijo			       60000
+
+Q20: Write a query that groups employees by dept_id and shows the total salary per
+department.
+
+SQL> update employee_21 set dept_id=101 where emp_id=3;
+
+1 row updated.
+
+Commit complete.
+SQL> select dept_id,SUM(emp_salary) as total_salary from employee_21 group by dept_id;
+
+   DEPT_ID TOTAL_SALARY
+---------- ------------
+       105	  60000
+       104	  65000
+       101	 114500
+
+Q21: Retrieve the department-wise average salary, but only for those departments with an
+average salary above 60000.
+
+select dept_id,AVG(emp_salary) as average_salary from employee_21 group by dept_id having avg(emp_salary)>60000;
+
+   DEPT_ID AVERAGE_SALARY
+---------- --------------
+       104	    65000
+
+Q22: List the departments and the number of employees in each department who earn
+above 50000.
+
+select d.dept_name,count(e.emp_id) as num_employees from department_21 d JOIN employee_21 e ON d.dept_id=e.dept_id where e.emp_salary>50000 GROUP BY d.dept_name;
+
+DEPT_NAME		  NUM_EMPLOYEES
+------------------------- -------------
+EEE				      1
+MCA				      1
+CIVIL				      1
+
+Q23: Use HAVING to list departments that have more than 3 employees.
+
+insert intO employee_21 values(6,'Joseph',50000,TO_DATE('2021-06-11', 'YYYY-MM-DD'), 101, 'joseph@gmail.com');
+insert intO employee_21 values(7,'Joyel',55000,TO_DATE('2021-06-11', 'YYYY-MM-DD'), 101, 'joyel@gmail.com');
+
+SQL> select d.dept_name,count(e.emp_id) as num_employees from department_21 d join employee_21 e on d.dept_id=e.dept_id group by dept_name;
+
+DEPT_NAME		  NUM_EMPLOYEES
+------------------------- -------------
+EEE				      1
+MCA				      4
+CIVIL				      1
+
+select d.dept_name,count(e.emp_id) as num_employees from department_21 d join employee_21 e on d.dept_id=e.dept_id group by dept_name having count(e.emp_id)>3;
+
+DEPT_NAME		  NUM_EMPLOYEES
+------------------------- -------------
+MCA				      4
+
+Q29: Write a query to find the names of employees who have a salary greater than the
+average salary in their department.
+
+select emp_name,emp_salary from employee_21 e1 where emp_salary >(select avg(emp_salary) from employee_21 e2 where e2.dept_id=e1.dept_id);
+
+EMP_NAME		  EMP_SALARY
+------------------------- ----------
+Abhi			       65000
+Joyel			       55000
+
+Q30: Select the emp_name and emp_salary of employees who are in departments that are
+located in 'Ernakulam'.
+
+update department_21 set dept_location='Ernakulam' where dept_id=101;
+select emp_name,emp_salary from employee_21 where dept_id =(select dept_id from department_21 where dept_location='Ernakulam');
+
+EMP_NAME		  EMP_SALARY
+------------------------- ----------
+Sanju			       49500
+Abhi			       65000
+Joseph			       50000
+Joyel			       55000
+
+Q31: Find the emp_name of employees who earn more than the highest salary in department
+102.
+
+select e
