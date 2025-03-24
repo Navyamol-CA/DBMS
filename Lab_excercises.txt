@@ -10,7 +10,7 @@ Table created
  ---------------------------- -------- --------------------------
  DEPT_ID                   		 NOT NULL 	NUMBER(38)
  DEPT_NAME                       NOT NULL 	VARCHAR2(25)
- DEPT_LOCATION                                                                                                              VARCHAR2(25)
+ DEPT_LOCATION                              VARCHAR2(25)
 
 	
 Q2: Write a SQL query to create an employee table with the following columns: emp_id
@@ -327,15 +327,15 @@ insert intO employee_21 values(7,'Joyel',55000,TO_DATE('2021-06-11', 'YYYY-MM-DD
 SQL> select d.dept_name,count(e.emp_id) as num_employees from department_21 d join employee_21 e on d.dept_id=e.dept_id group by dept_name;
 
 DEPT_NAME		  NUM_EMPLOYEES
-------------------------- -------------
+-------------- ----------------------
 EEE				      1
 MCA				      4
-CIVIL				      1
+CIVIL				  1
 
 select d.dept_name,count(e.emp_id) as num_employees from department_21 d join employee_21 e on d.dept_id=e.dept_id group by dept_name having count(e.emp_id)>3;
 
 DEPT_NAME		  NUM_EMPLOYEES
-------------------------- -------------
+-------------- --------------------
 MCA				      4
 
 Q24: Write a query to find the names of employees who have a salary greater than the
@@ -369,7 +369,7 @@ insert intO employee_21 values(9,'Nithya',55000,TO_DATE('2022-08-05', 'YYYY-MM-D
 insert intO employee_21 values(1,'Sreya',55000,TO_DATE('2020-08-05', 'YYYY-MM-DD'), 102, 'sreya@gmail.com');
 select * from employee_21 order by emp_id desc;
     EMP_ID EMP_NAME                  EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
----------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+---------- ------------------------- ---------- --------- ---------- --------------------------------
          1 Sreya                          55000 05-AUG-20        102 sreya@gmail.com
          2 Sanju                          49500 15-JUN-21        101 sanju@gmail.com
          3 Abhi                           65000 03-OCT-21        101 abhi@gmail.com
@@ -512,19 +512,18 @@ select dept_id,avg(emp_salary) as average_salary from employee_21 where dept_id 
 
 Q35: Find the employee with the highest salary in each department using MAX().
 
-select dept_id,max(emp_salary) as maximum_salary from employee_21 group by dept_id;
+select dept_id,emp_id,emp_name,emp_salary as highest_salary from employee_21 e where emp_salary=(select max(emp_salary) from employee_21 where dept_id=e.dept_id);
 
-   DEPT_ID MAXIMUM_SALARY
----------- --------------
-       105          72500
-       104          65000
-       101          65000
-       103          78000
-       102          85000
-       106          55000
+   DEPT_ID     EMP_ID EMP_NAME                  HIGHEST_SALARY
+---------- ---------- ------------------------- --------------
+       101          3 Abhi                               65000
+       104          4 Esther                             65000
+       102          9 Nithya                             85000
+       103         12 Neha                               78000
+       105         15 Jaya                               72500
+       106         21 Sreejish                           55000
 
 6 rows selected.
-
 
 Q36: Write a query that finds the total number of employees in each department.
 
