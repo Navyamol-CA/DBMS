@@ -5,6 +5,13 @@ Q1: Create a department table with the following columns: dept_id (PK), dept_nam
 create table department_21(dept_id int primary key, dept_name varchar(25) not null, dept_location varchar(25));
 
 Table created
+
+ Name                           Null? 		  Type
+ ---------------------------- -------- --------------------------
+ DEPT_ID                   		 NOT NULL 	NUMBER(38)
+ DEPT_NAME                       NOT NULL 	VARCHAR2(25)
+ DEPT_LOCATION                                                                                                              VARCHAR2(25)
+
 	
 Q2: Write a SQL query to create an employee table with the following columns: emp_id
 (PK), emp_name, emp_salary (>20k), emp_join_date (between June 1998- till
@@ -13,11 +20,33 @@ date), dept_id (FK).
 create table Employee_21(emp_id INT PRIMARY KEY,emp_name VARCHAR(25),emp_salary numeric(10,2) CHECK (emp_salary>20000),emp_join_date DATE CHECK(emp_join_date >= date '1998-06-01'),dept_id INT,FOREIGN KEY(dept_id) REFERENCES department_21(dept_id));
 
 Table created;
+
+SQL> DESC employee_21;
+ Name					Null?    	Type
+ ------------------   ----------- ----------------------
+ EMP_ID 				NOT NULL 	NUMBER(38)
+ EMP_NAME					    	VARCHAR2(25)
+ EMP_SALARY					    	NUMBER(10,2)
+ EMP_JOIN_DATE					    DATE
+ DEPT_ID					    	NUMBER(38)
+
+
 	
 Q3: Create table support table with s_id (PK), emp_id (FK), dept_id (FK), status
 (Yes/No).
 
 create table support_21(s_id int primary key, emp_id int, dept_id int, status varchar(5) check (status IN('Yes','No')),foreign key(emp_id ) references employee_21(emp_id),FOREIGN KEY(dept_id) REFERENCES department_21(dept_id));
+
+SQL> DESC support_21;
+
+ Name				Null?    	Type
+ --------------  ------------ ------------------- 
+ S_ID				NOT NULL 	NUMBER(38)
+ EMP_ID 					    NUMBER(38)
+ DEPT_ID					    NUMBER(38)
+ STATUS 					    VARCHAR2(5)
+
+
 
 Q4: Display the schema of the above three tables.
 
@@ -26,28 +55,28 @@ DESC employee_21;
 DESC support_21;
 
 SQL> desc department_21;
- Name														   Null?    Type
- ---------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
- DEPT_ID													   NOT NULL NUMBER(38)
- DEPT_NAME													   NOT NULL VARCHAR2(25)
- DEPT_LOCATION														    VARCHAR2(25)
+ Name						Null?    	Type
+ ----------------------  ------------  ---------------------
+ DEPT_ID					NOT NULL 	NUMBER(38)
+ DEPT_NAME					NOT NULL 	VARCHAR2(25)
+ DEPT_LOCATION							VARCHAR2(25)
 
 
 
 SQL> DESC employee_21;
- Name					   Null?    Type
- ----------------------------------------- -------- ----------------------------
- EMP_ID 				   NOT NULL NUMBER(38)
- EMP_NAME					    VARCHAR2(25)
- EMP_SALARY					    NUMBER(10,2)
+ Name					Null?    	Type
+ ------------------   ----------- ----------------------
+ EMP_ID 				NOT NULL 	NUMBER(38)
+ EMP_NAME					    	VARCHAR2(25)
+ EMP_SALARY					    	NUMBER(10,2)
  EMP_JOIN_DATE					    DATE
- DEPT_ID					    NUMBER(38)
+ DEPT_ID					    	NUMBER(38)
 
 
 SQL> DESC support_21;
- Name					   Null?    Type
- ----------------------------------------- -------- ----------------------------
- S_ID					   NOT NULL NUMBER(38)
+ Name				Null?    	Type
+ -------------   ------------- -------------------
+ S_ID				NOT NULL 	NUMBER(38)
  EMP_ID 					    NUMBER(38)
  DEPT_ID					    NUMBER(38)
  STATUS 					    VARCHAR2(5)
@@ -59,14 +88,14 @@ Q5: Alter the employee table to add a new column emp_email of type VARCHAR(100).
 Alter table employee_21 add emp_email varchar(100);
 
 SQL> DESC employee_21;
- Name					   Null?    Type
- ----------------------------------------- -------- ----------------------------
- EMP_ID 				   NOT NULL NUMBER(38)
- EMP_NAME					    VARCHAR2(25)
- EMP_SALARY					    NUMBER(10,2)
+ Name					  Null?    	Type
+ ----------------   -------------- -------------------
+ EMP_ID 				 NOT NULL	NUMBER(38)
+ EMP_NAME					    	VARCHAR2(25)
+ EMP_SALARY					    	NUMBER(10,2)
  EMP_JOIN_DATE					    DATE
- DEPT_ID					    NUMBER(38)
- EMP_EMAIL					    VARCHAR2(100)
+ DEPT_ID					    	NUMBER(38)
+ EMP_EMAIL					    	VARCHAR2(100)
 
 
 Q6: Drop the support table if it is no longer required.
@@ -74,19 +103,23 @@ Q6: Drop the support table if it is no longer required.
 drop table support_21;
 Table dropped.
 
+SQL> DESC SUPPORT_21
+ERROR:
+ORA-04043: object SUPPORT_21 does not exist
+
 Q7: Modify the emp_salary column in the employee table to allow values up to
 DECIMAL(12, 2).
 
 Alter table employee_21 modify emp_salary decimal(12,2);
 
- Name					   Null?    Type
- ----------------------------------------- -------- ----------------------------
- EMP_ID 				   NOT NULL NUMBER(38)
- EMP_NAME					    VARCHAR2(25)
- EMP_SALARY					    NUMBER(12,2)
+ Name					 Null?    	Type
+ ----------------   ------------- --------------------
+ EMP_ID 				NOT NULL 	NUMBER(38)
+ EMP_NAME					    	VARCHAR2(25)
+ EMP_SALARY					    	NUMBER(12,2)
  EMP_JOIN_DATE					    DATE
- DEPT_ID					    NUMBER(38)
- EMP_EMAIL					    VARCHAR2(100)
+ DEPT_ID					    	NUMBER(38)
+ EMP_EMAIL					    	VARCHAR2(100)
 
 
 Q8: Add five suitable records to department table (Let value of dept_id starts with 101).
@@ -97,16 +130,15 @@ insert intO department_21 values(103,'ECE','NORTH BLOCK');
 insert intO department_21 values(104,'EEE','NORTH BLOCK');
 insert intO department_21 values(105,'CIVIL','NORTH BLOCK');
 
-ANS):
 SQL> SELECT * FROM DEPARTMENT_21;
 
-   DEPT_ID DEPT_NAME		     DEPT_LOCATION
----------- ------------------------- -------------------------
-       101 MCA			     SOUTH BLOCK
-       102 MBA			     SOUTH BLOCK
-       103 ECE			     NORTH BLOCK
-       104 EEE			     NORTH BLOCK
-       105 CIVIL		     NORTH BLOCK
+   DEPT_ID 		DEPT_NAME		 DEPT_LOCATION
+---------- ------------------ -------------------------
+       101 		MCA			     SOUTH BLOCK
+       102 		MBA			     SOUTH BLOCK
+       103 		ECE			     NORTH BLOCK
+       104 		EEE			     NORTH BLOCK
+       105 		CIVIL		     NORTH BLOCK
        
 Q9: Insert the following employee record into the employee table: emp_id = 1, emp_name
 = 'John Doe', emp_salary = 60000, emp_join_date = '15-05-2021', dept_id
@@ -131,13 +163,13 @@ insert intO employee_21 values(5,'Cijo',60000,TO_DATE('2022-04-10', 'YYYY-MM-DD'
 
  SQL> select * from employee_21;
 
-    EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
----------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
-	 1 John Doe			  60000 03-JUN-21	 101 john@gmail.com
-	 2 Sanju			  50000 15-JUN-21	 102 sanju@gmail.com
-	 3 Abhi 			  65000 03-OCT-21	 103 abhi@gmail.com
-	 4 Esther			  65000 07-DEC-22	 104 esther@gmail.com
-	 5 Cijo 			  60000 10-APR-22	 105 cijo@gmail.com
+    EMP_ID 		EMP_NAME	EMP_SALARY 	 EMP_JOIN_    DEPT_ID     EMP_EMAIL
+----------- --------------- ----------- ------------- ---------  -------------------- 
+	 1			 John Doe 		 60000 	03-JUN-21	 	101 	john@gmail.com
+	 2 			 Sanju		 	 50000  15-JUN-21	    102     sanju@gmail.com
+	 3 			 Abhi 			 65000  03-OCT-21	 	103 	abhi@gmail.com
+	 4           Esther			 65000  07-DEC-22	 	104 	esther@gmail.com
+	 5 			 Cijo            60000  10-APR-22	 	105 	cijo@gmail.com
 
 Q11: Update the salary of the employee with emp_id = 1 by increasing it by 10%.
 
@@ -146,7 +178,7 @@ update employee_21 set emp_salary=emp_salary*1.10 where emp_id=1;
 SQL> select * from employee_21;
 
     EMP_ID EMP_NAME		     EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
----------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+---------- ------------------------- ---------- --------- ---------- ----------
 	 1 John Doe			  66000 03-JUN-21	 101 john@gmail.com
 	 2 Sanju			  50000 15-JUN-21	 102 sanju@gmail.com
 	 3 Abhi 			  65000 03-OCT-21	 103 abhi@gmail.com
@@ -306,7 +338,7 @@ DEPT_NAME		  NUM_EMPLOYEES
 ------------------------- -------------
 MCA				      4
 
-Q29: Write a query to find the names of employees who have a salary greater than the
+Q24: Write a query to find the names of employees who have a salary greater than the
 average salary in their department.
 
 select emp_name,emp_salary from employee_21 e1 where emp_salary >(select avg(emp_salary) from employee_21 e2 where e2.dept_id=e1.dept_id);
@@ -316,7 +348,7 @@ EMP_NAME		  EMP_SALARY
 Abhi			       65000
 Joyel			       55000
 
-Q30: Select the emp_name and emp_salary of employees who are in departments that are
+Q25: Select the emp_name and emp_salary of employees who are in departments that are
 located in 'Ernakulam'.
 
 update department_21 set dept_location='Ernakulam' where dept_id=101;
@@ -329,7 +361,190 @@ Abhi			       65000
 Joseph			       50000
 Joyel			       55000
 
-Q31: Find the emp_name of employees who earn more than the highest salary in department
+Q26: Find the emp_name of employees who earn more than the highest salary in department
 102.
 
-select e
+insert intO employee_21 values(8,'Navya',50000,TO_DATE('2022-06-15', 'YYYY-MM-DD'), 102, 'navya@gmail.com');
+insert intO employee_21 values(9,'Nithya',55000,TO_DATE('2022-08-05', 'YYYY-MM-DD'), 102, 'nithya@gmail.com');
+insert intO employee_21 values(1,'Sreya',55000,TO_DATE('2020-08-05', 'YYYY-MM-DD'), 102, 'sreya@gmail.com');
+select * from employee_21 order by emp_id desc;
+    EMP_ID EMP_NAME                  EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+         1 Sreya                          55000 05-AUG-20        102 sreya@gmail.com
+         2 Sanju                          49500 15-JUN-21        101 sanju@gmail.com
+         3 Abhi                           65000 03-OCT-21        101 abhi@gmail.com
+         4 Esther                         65000 07-DEC-22        104 esther@gmail.com
+         5 Jijo                           60000 10-APR-22        105 cijo@gmail.com
+         6 Joseph                         50000 11-JUN-21        101 joseph@gmail.com
+         7 Joyel                          55000 11-JUN-21        101 joyel@gmail.com
+         8 Navya                          50000 15-JUN-22        102 navya@gmail.com
+         9 Nithya                         55000 05-AUG-22        102 nithya@gmail.com
+
+9 rows selected.
+select emp_name from employee_21 where emp_salary >(select max(emp_salary) from employee_21 where dept_id=102);
+
+EMP_NAME
+-------------------------
+Abhi
+Esther
+Jijo
+
+
+Q27: Write a query that returns the department name of the department with the highest
+total salary. 
+
+
+SELECT dept_name FROM department_21 WHERE dept_id = (SELECT dept_id FROM employee_21 GROUP BY dept_id HAVING SUM(emp_salary) = (SELECT MAX(SUM(emp_salary)) FROM employee_21 GROUP BY dept_id));
+
+DEPT_NAME
+-------------------------
+MCA
+
+Q28: Find the emp_id and emp_name of employees who are working in departments with
+less than 10 employees. 
+
+select emp_id,emp_name from employee_21 where dept_id in(select dept_id from employee_21 group by dept_id having count(emp_id)<10);
+
+    EMP_ID EMP_NAME
+---------- -------------------------
+         5 Jijo
+         4 Esther
+         2 Sanju
+         3 Abhi
+         6 Joseph
+         7 Joyel
+         8 Navya
+         9 Nithya
+         1 Sreya
+         
+5. View Questions
+Q29: Create a view high_salary_employees that lists the emp_name and emp_salary of
+employees who earn above 70000.
+
+insert intO employee_21 values(9,'Nithya',85000,TO_DATE('2022-08-05', 'YYYY-MM-DD'), 102, 'nithya@gmail.com');
+insert intO employee_21 values(12,'Neha',78000,TO_DATE('2022-08-08', 'YYYY-MM-DD'), 103, 'neha@gmail.com');
+insert intO employee_21 values(15,'Jaya',72500,TO_DATE('2018-08-05', 'YYYY-MM-DD'), 105, 'Jayaa@gmail.com');
+
+create view high_salary_employee_21 as select emp_name,emp_salary from employee_21 where emp_salary > 70000;         
+View created.
+SQL> select * from high_salary_employee_21;
+
+EMP_NAME                  EMP_SALARY
+------------------------- ----------
+Nithya                         85000
+Neha                           78000
+Jaya                           72500
+
+Q30: Write a query to view the data from the high_salary_employees view.
+
+SQL> select * from high_salary_employee_21;
+
+EMP_NAME                  EMP_SALARY
+------------------------- ----------
+Nithya                         85000
+Neha                           78000
+Jaya                           72500
+
+
+Q31: Create a view to list employees along with the department name and their salary,
+filtering out employees earning below 50000.
+
+insert intO employee_21 values(16,'Sree',45000,TO_DATE('2023-08-05', 'YYYY-MM-DD'), 105, 'Sree@gmail.com');
+insert intO employee_21 values(17,'Isha',35000,TO_DATE('2023-09-05', 'YYYY-MM-DD'), 105, 'ishu@gmail.com');
+
+create view employe_21 as select e.emp_name,d.dept_name,e.emp_salary from employee_21 e,department_21 d where emp_salary < 50000 and e.dept_id=d.dept_id;
+
+SQL> select * from employe_21;
+
+EMP_NAME                  DEPT_NAME                 EMP_SALARY
+------------------------- ------------------------- ----------
+Sanju                     MCA                            49500
+Sree                      CIVIL                          45000
+Isha                      CIVIL                          35000
+
+Q32: Drop the high_salary_employees view.
+
+drop view high_salary_employee_21;
+
+SQL> desc high_salary_employee_21;
+ERROR:
+ORA-04043: object high_salary_employee_21 does not exist
+Help: https://docs.oracle.com/error-help/db/ora-04043/
+
+6. Aggregate Function Questions
+Q33: Write a query to find the total salary paid in each department.
+
+select d.dept_name,sum(e.emp_salary) as total_salary from employee_21 e join department_21 d where e.dept_id=d.dept_id group by dept_id;
+
+select dept_id,sum(emp_salary) as total_salary from employee_21 group by dept_id;
+
+   DEPT_ID TOTAL_SALARY
+---------- ------------
+       105       212500
+       104        65000
+       101       219500
+       103        78000
+       102       135000
+
+Q34: Use AVG() to find the average salary of employees in the 'Marketing' department.
+
+insert into department_21 values(106,'Marketing','Thrissur');
+SQL> select * from department_21;
+
+   DEPT_ID DEPT_NAME                 DEPT_LOCATION
+---------- ------------------------- -------------------------
+       101 MCA                       Ernakulam
+       102 MBA                       SOUTH BLOCK
+       103 ECE                       NORTH BLOCK
+       104 EEE                       NORTH BLOCK
+       105 CIVIL                     NORTH BLOCK
+       106 Marketing                 Thrissur
+
+insert intO employee_21 values(20,'Sreekutty',45000,TO_DATE('2023-08-05', 'YYYY-MM-DD'), 106, 'Sreekk@gmail.com');
+insert intO employee_21 values(21,'Sreejish',55000,TO_DATE('2023-08-06', 'YYYY-MM-DD'), 106, 'Srj@gmail.com');
+insert intO employee_21 values(22,'Kashi',35000,TO_DATE('2023-08-05', 'YYYY-MM-DD'), 106, 'kashi@gmail.com');
+
+select dept_id,avg(emp_salary) as average_salary from employee_21 where dept_id =(select dept_id from department_21 where dept_name='Marketing') group by dept_id; 
+
+   DEPT_ID AVERAGE_SALARY
+---------- --------------
+       106          45000
+
+Q35: Find the employee with the highest salary in each department using MAX().
+
+select dept_id,max(emp_salary) as maximum_salary from employee_21 group by dept_id;
+
+   DEPT_ID MAXIMUM_SALARY
+---------- --------------
+       105          72500
+       104          65000
+       101          65000
+       103          78000
+       102          85000
+       106          55000
+
+6 rows selected.
+
+
+Q36: Write a query that finds the total number of employees in each department.
+
+select dept_id,count(*) as total_employees from employee_21 group by dept_id;
+   DEPT_ID TOTAL_EMPLOYEES
+---------- ---------------
+       105               4
+       104               1
+       101               4
+       103               1
+       102               2
+       106               3
+
+6 rows selected.
+
+Q37: Calculate the sum of the salaries of all employees whose emp_salary is greater than
+50000.
+
+select sum(emp_salary) as total_salary from employee_21 where emp_salary > 50000;
+
+TOTAL_SALARY
+------------
+      535500
