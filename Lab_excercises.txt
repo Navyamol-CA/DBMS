@@ -547,3 +547,307 @@ select sum(emp_salary) as total_salary from employee_21 where emp_salary > 50000
 TOTAL_SALARY
 ------------
       535500
+
+7. Join Questions
+
+Q38: Write an INNER JOIN query to list employee names and their corresponding
+department names.
+
+Select e.emp_name,d.dept_name from employee_21 e inner join department_21 d on e.dept_id=d.dept_id;
+
+EMP_NAME                  DEPT_NAME
+------------------------- -------------------------
+Sanju                     MCA
+Abhi                      MCA
+Esther                    EEE
+Jijo                      CIVIL
+Navya                     MBA
+Nithya                    MBA
+Sreekutty                 Marketing
+Neha                      ECE
+Jaya                      CIVIL
+Sree                      CIVIL
+Isha                      CIVIL
+Sreejish                  Marketing
+Kashi                     Marketing
+Joseph                    MCA
+Joyel                     MCA
+
+15 rows selected.
+
+Q39: Use a LEFT JOIN to list all employees and their department names, including those
+who do not belong to any department.
+
+insert intO employee_21 values(23,'Sona',45000,TO_DATE('2023-08-08', 'YYYY-MM-DD'),NULL,'Sona@gmail.com');
+insert intO employee_21 values(24,'Saji',45000,TO_DATE('2023-08-09', 'YYYY-MM-DD'),NULL,'Saji@gmail.com');
+SQL> SELECT * FROM EMPLOYEE_21;
+
+    EMP_ID EMP_NAME                  EMP_SALARY EMP_JOIN_    DEPT_ID EMP_EMAIL
+---------- ------------------------- ---------- --------- ---------- ----------------------------------------------------------------------------------------------------
+         2 Sanju                          49500 15-JUN-21        101 sanju@gmail.com
+         3 Abhi                           65000 03-OCT-21        101 abhi@gmail.com
+         4 Esther                         65000 07-DEC-22        104 esther@gmail.com
+         5 Jijo                           60000 10-APR-22        105 cijo@gmail.com
+         8 Navya                          50000 15-JUN-22        102 navya@gmail.com
+         9 Nithya                         85000 05-AUG-22        102 nithya@gmail.com
+        20 Sreekutty                      45000 05-AUG-23        106 Sreekk@gmail.com
+        12 Neha                           78000 08-AUG-22        103 neha@gmail.com
+        15 Jaya                           72500 05-AUG-18        105 Jayaa@gmail.com
+        16 Sree                           45000 05-AUG-23        105 Sree@gmail.com
+        17 Isha                           35000 05-SEP-23        105 ishu@gmail.com
+        21 Sreejish                       55000 06-AUG-23        106 Srj@gmail.com
+        22 Kashi                          35000 05-AUG-23        106 kashi@gmail.com
+         6 Joseph                         50000 11-JUN-21        101 joseph@gmail.com
+         7 Joyel                          55000 11-JUN-21        101 joyel@gmail.com
+        23 Sona                           45000 08-AUG-23            Sona@gmail.com
+        24 Saji                           45000 09-AUG-23            Saji@gmail.com
+
+17 rows selected.
+Select e.emp_name,d.dept_name from employee_21 e left join department_21 d on e.dept_id=d.dept_id;
+
+EMP_NAME                  DEPT_NAME
+------------------------- -------------------------
+Sanju                     MCA
+Abhi                      MCA
+Joseph                    MCA
+Joyel                     MCA
+Navya                     MBA
+Nithya                    MBA
+Neha                      ECE
+Esther                    EEE
+Jijo                      CIVIL
+Jaya                      CIVIL
+Sree                      CIVIL
+Isha                      CIVIL
+Sreekutty                 Marketing
+Sreejish                  Marketing
+Kashi                     Marketing
+Sona
+Saji
+
+17 rows selected.
+
+Q40: Write a RIGHT JOIN to list all departments and their corresponding employees,
+including departments with no employees.
+
+insert into department_21 values(107,'Design','Kozhikode');
+insert into department_21 values(108,'Medical','Tvm');
+SQL> select * from department_21;
+
+   DEPT_ID DEPT_NAME                 DEPT_LOCATION
+---------- ------------------------- -------------------------
+       101 MCA                       Ernakulam
+       102 MBA                       SOUTH BLOCK
+       103 ECE                       NORTH BLOCK
+       104 EEE                       NORTH BLOCK
+       105 CIVIL                     NORTH BLOCK
+       106 Marketing                 Thrissur
+       107 Design                    Kozhikode
+       108 Medical                   Tvm
+
+8 rows selected.
+
+Select e.emp_name,d.dept_name from employee_21 e right join department_21 d on e.dept_id=d.dept_id;
+
+EMP_NAME                  DEPT_NAME
+------------------------- -------------------------
+Sanju                     MCA
+Abhi                      MCA
+Esther                    EEE
+Jijo                      CIVIL
+Navya                     MBA
+Nithya                    MBA
+Sreekutty                 Marketing
+Neha                      ECE
+Jaya                      CIVIL
+Sree                      CIVIL
+Isha                      CIVIL
+Sreejish                  Marketing
+Kashi                     Marketing
+Joseph                    MCA
+Joyel                     MCA
+                          Design
+                          Medical
+
+17 rows selected.
+
+Q41: Use an OUTER JOIN to list all employees and their department names, showing NULL
+if there is no corresponding department.
+
+Select e.emp_name,d.dept_name from employee_21 e full outer join department_21 d on e.dept_id=d.dept_id;
+
+EMP_NAME                  DEPT_NAME
+------------------------- -------------------------
+Sanju                     MCA
+Abhi                      MCA
+Esther                    EEE
+Jijo                      CIVIL
+Navya                     MBA
+Nithya                    MBA
+Sreekutty                 Marketing
+Neha                      ECE
+Jaya                      CIVIL
+Sree                      CIVIL
+Isha                      CIVIL
+Sreejish                  Marketing
+Kashi                     Marketing
+Joseph                    MCA
+Joyel                     MCA
+Sona
+Saji
+                          Design
+                          Medical
+
+19 rows selected.
+
+8. Arithmetic and String Operation Questions
+
+Q42: Write a query to increase the salary of all employees by 5000.
+
+SQL> update employee_21 set emp_salary=emp_salary+5000;
+
+21 rows updated.
+
+Commit complete.
+SQL> Select emp_name,emp_salary from employee_21 ;
+
+EMP_NAME                  EMP_SALARY
+------------------------- ----------
+Sanju                          54500
+Abhi                           70000
+Esther                         70000
+Jijo                           65000
+Navya                          55000
+Nithya                         90000
+Sreekutty                      50000
+Neha                           83000
+Jaya                           77500
+Sree                           50000
+Isha                           40000
+Sreejish                       60000
+Kashi                          40000
+Joseph                         55000
+Joyel                          60000
+Sona                           50000
+Saji                           50000
+Anagha                         50500
+Gayatri                        55000
+Durga                          60000
+Anjali                         50000
+
+21 rows selected.
+
+Q43: Use arithmetic operations to find the new salary for employees after a 10% bonus.
+
+select emp_name,emp_salary,emp_salary*1.10 as new_salary from employee_21;
+
+EMP_NAME                  EMP_SALARY NEW_SALARY
+------------------------- ---------- ----------
+Sanju                          54500      59950
+Abhi                           70000      77000
+Esther                         70000      77000
+Jijo                           65000      71500
+Navya                          55000      60500
+Nithya                         90000      99000
+Sreekutty                      50000      55000
+Neha                           83000      91300
+Jaya                           77500      85250
+Sree                           50000      55000
+Isha                           40000      44000
+Sreejish                       60000      66000
+Kashi                          40000      44000
+Joseph                         55000      60500
+Joyel                          60000      66000
+Sona                           50000      55000
+Saji                           50000      55000
+Anagha                         50500      55550
+Gayatri                        55000      60500
+Durga                          60000      66000
+Anjali                         50000      55000
+
+21 rows selected.
+
+Q44: Use the CONCAT() function to display department names followed by its location.
+
+
+
+
+
+
+
+
+
+
+
+9. Set Operations Questions
+
+Q48: Use UNION to combine the lists of employees who joined before 2010 and after
+2018.
+
+insert intO employee_21 values(30,'Anagha',45500,TO_DATE('2008-08-08', 'YYYY-MM-DD'),108,'anagha@gmail.com');
+insert intO employee_21 values(31,'Gayatri',50000,TO_DATE('2003-08-09', 'YYYY-MM-DD'),103,'gayatri@gmail.com');
+insert intO employee_21 values(32,'Durga',55000,TO_DATE('2009-08-08', 'YYYY-MM-DD'),104,'durga@gmail.com');
+insert intO employee_21 values(33,'Anjali',45000,TO_DATE('2007-08-09', 'YYYY-MM-DD'),106,'anju@gmail.com');
+
+select emp_name,EMP_JOIN_DATE from employee_21 where EMP_JOIN_DATE < date '2010-01-01' UNION select emp_name,EMP_JOIN_DATE from employee_21 where EMP_JOIN_DATE > date '2018-01-01';
+
+EMP_NAME                  EMP_JOIN_
+------------------------- ---------
+Abhi                      03-OCT-21
+Anagha                    08-AUG-08
+Anjali                    09-AUG-07
+Durga                     08-AUG-09
+Esther                    07-DEC-22
+Gayatri                   09-AUG-03
+Isha                      05-SEP-23
+Jaya                      05-AUG-18
+Jijo                      10-APR-22
+Joseph                    11-JUN-21
+Joyel                     11-JUN-21
+Kashi                     05-AUG-23
+Navya                     15-JUN-22
+Neha                      08-AUG-22
+Nithya                    05-AUG-22
+Saji                      09-AUG-23
+Sanju                     15-JUN-21
+Sona                      08-AUG-23
+Sree                      05-AUG-23
+Sreejish                  06-AUG-23
+Sreekutty                 05-AUG-23
+
+21 rows selected.
+
+Q49: Use INTERSECT to find employees who get salary in the range 40k-50k.
+
+select emp_name,emp_salary from employee_21 where emp_salary >=40000 INTERSECT select emp_name,emp_salary from employee_21 where emp_salary <=50000;
+
+EMP_NAME                  EMP_SALARY
+------------------------- ----------
+Anagha                         45500
+Anjali                         45000
+Gayatri                        50000
+Joseph                         50000
+Navya                          50000
+Saji                           45000
+Sanju                          49500
+Sona                           45000
+Sree                           45000
+Sreekutty                      45000
+
+10 rows selected.
+
+Q50: Use EXCEPT to list out the departments not in Ernakulam.
+
+select dept_name,dept_location from department_21 MINUS select dept_name,dept_location from department_21 where dept_location='Ernakulam';
+
+DEPT_NAME                 DEPT_LOCATION
+------------------------- -------------------------
+CIVIL                     NORTH BLOCK
+Design                    Kozhikode
+ECE                       NORTH BLOCK
+EEE                       NORTH BLOCK
+MBA                       SOUTH BLOCK
+Marketing                 Thrissur
+Medical                   Tvm
+
+7 rows selected.
