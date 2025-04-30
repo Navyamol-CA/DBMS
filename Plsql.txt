@@ -76,3 +76,258 @@ Employee name : Nithya
 Department id : 102
 
 PL/SQL procedure successfully completed.
+
+3.Write a PL/SQL code to display the job details of the person with employee number 102.
+ (Use the concept of %rowtype)
+
+DECLARE
+  v_emp employee_21%rowtype;
+BEGIN
+  SELECT * INTO v_emp from employee_21 where emp_id = 102;
+  DBMS_OUTPUT.PUT_LINE ('****************************');
+  DBMS_OUTPUT.PUT_LINE ('Faculty Name: '||v_emp.emp_name);
+  DBMS_OUTPUT.PUT_LINE ('Joining Date: '||v_emp.emp_join_date);
+  DBMS_OUTPUT.PUT_LINE ('Salary: '||v_emp.emp_salary);
+  DBMS_OUTPUT.PUT_LINE ('****************************');
+END;
+/
+
+SQL> @job_details.sql
+****************************
+Faculty Name: Anagha
+Joining Date: 08-AUG-08
+Salary: 50500
+****************************
+
+PL/SQL procedure successfully completed.
+
+5.Write PLSQL code to calculate total salary amount of first n record of
+employee table.
+
+SET VERIFY OFF
+DECLARE
+n number;
+i number:=1;
+t number:=0;
+cursor emp is select emp_salary from employee_21;
+cemp emp%rowtype;
+BEGIN
+n:=&n;
+open emp;
+WHILE (i<=n)
+LOOP
+fetch emp into cemp;
+t:=t+cemp.emp_salary;
+i:=i+1;
+END LOOP;
+dbms_output.put_line('---------------------------------------------------------');
+dbms_output.put_line('Total salary of ' || n || ' employee is ' || t );
+dbms_output.put_line('---------------------------------------------------------');
+close emp;
+END;
+/
+
+SQL> @cursor1.sql
+Enter value for n: 2
+---------------------------------------------------------
+Total salary of 2 employee is 124500
+---------------------------------------------------------
+
+PL/SQL procedure successfully completed.
+
+5. Write a PL/SQL code to raise an exception if an employee with a particular employee ID is not existing.
+ Otherwise print that employee details.
+
+ accept v_id prompt 'Enter the id to search :';
+DECLARE
+emp employee_21%rowtype;
+v_id number;
+BEGIN
+v_id:=&v_id;
+select * into emp from employee_21 where emp_id=v_id;
+dbms_output.put_line('-----------------------------------------------------');
+dbms_output.put_line('Name :' ||emp.emp_name);
+dbms_output.put_line('Join date :' ||emp.emp_join_date);
+dbms_output.put_line('Salary:' ||emp.emp_salary);
+dbms_output.put_line('-----------------------------------------------------');
+EXCEPTION
+when no_data_found then
+dbms_output.put_line('No details for the employee with id ' || v_id);
+END;
+/
+
+SQL> @exception.sql
+Enter the id to search :8
+-----------------------------------------------------
+Name :Navya
+Join date :15-JUN-22
+Salary:55000
+-----------------------------------------------------
+
+PL/SQL procedure successfully completed.
+
+6. Write a PL/SQL procedure to perform the concatenation of two strings.
+ Strings need to be accepted through parameter passing.
+
+create or replace procedure c_string(str1 in varchar, str2 in varchar) as
+str3 varchar(20);
+begin
+str3 := CONCAT(str1, str2);
+dbms_output.put_line('Concatenated string is: ' || str3);
+end;
+/
+accept str1 prompt 'Enter the value of first string:';
+accept str2 prompt 'Enter the value of second string:';
+declare
+str1 varchar(20);
+str2 varchar(20);
+begin
+str1 := '&str1';
+str2 := '&str2';
+c_string(str1, str2);
+end;
+/
+
+ SQL> @concat.sql
+
+Procedure created.
+
+Enter the value of first string:hello world
+Enter the value of second string:hii
+Concatenated string is: hello worldhii
+
+PL/SQL procedure successfully completed.
+
+7.Write a PL/SQL procedure to find the number of employees who draw salary
+ranging from 1000-10000, 10001-20000, 20001-30000 & above 30k from the
+employee table.
+
+create or replace procedure check_count as
+cursor cur_emp is select emp_salary from employee_21;
+c_10k number;
+c_20k number;
+c_30k number;
+c_more number;
+v_cur cur_emp%rowtype;
+begin
+c_10k := 0;
+c_20k := 0;
+c_30k := 0;
+c_more := 0;
+open cur_emp;
+loop
+fetch cur_emp into v_cur;
+exit when cur_emp%notfound;
+if (v_cur.emp_salary >= 1000) and (v_cur.emp_salary <= 10000) then
+c_10k := c_10k + 1;
+elsif (v_cur.emp_salary >= 10001) and (v_cur.emp_salary <= 20000) then
+c_20k := c_20k + 1;
+elsif (v_cur.emp_salary >= 20001) and (v_cur.emp_salary <= 30000) then
+c_30k := c_30k + 1;
+else
+c_more := c_more + 1;
+end if;
+end loop;
+close cur_emp;
+dbms_output.put_line('No. of employee_21s with salary in the range 1000-10000 ' ||
+c_10k);
+dbms_output.put_line('No. of employee_21s with salary in the range 10001-20000 ' ||
+c_20k);
+dbms_output.put_line('No. of employee_21s with salary in the range 20001-30000 ' ||
+c_30k);
+dbms_output.put_line('No. of employee_21s with salary more than 30000 ' || c_more);
+end;
+/
+begin
+dbms_output.put_line('Count of employee_21s in a particular salary range');
+dbms_output.put_line('-----------------------------------------------');
+check_count();
+end;
+/
+
+SQL> @no_employee.sql
+
+Procedure created.
+
+Count of employee_21s in a particular salary range
+-----------------------------------------------
+No. of employee_21s with salary in the range 1000-10000 0
+No. of employee_21s with salary in the range 10001-20000 0
+No. of employee_21s with salary in the range 20001-30000 0
+No. of employee_21s with salary more than 30000 21
+
+PL/SQL procedure successfully completed.
+
+8. Create a function that accepts a number and returns its reverse value. 
+Also write the program to invoke this function.
+
+DECLARE
+  a NUMBER;
+  c NUMBER;
+
+  FUNCTION reverse_it(x IN NUMBER) RETURN NUMBER AS
+    n NUMBER := x;
+    rev NUMBER := 0;
+    r NUMBER;
+    z NUMBER;
+  BEGIN
+    WHILE n > 0 LOOP
+      r := MOD(n, 10);
+      rev := rev * 10 + r;
+      n := FLOOR(n / 10);
+    END LOOP;
+    z := rev;
+    RETURN z;
+  END;
+
+BEGIN
+  a := &a;
+  c := reverse_it(a);
+  DBMS_OUTPUT.PUT_LINE('The reverse of number is ' || c);
+END;
+/
+SQL> @reverse.sql
+Enter value for a: 123
+The reverse of number is 321
+
+PL/SQL procedure successfully completed.
+
+ 9. Write a PL/SQL function that accepts department number and returns the total salary spent 
+ for that department.
+
+
+CREATE OR REPLACE FUNCTION tot_sal (did NUMBER)
+RETURN NUMBER
+AS
+  tot_salary NUMBER;
+BEGIN
+  SELECT SUM(emp_salary) INTO tot_salary FROM employee_21 WHERE dept_id = did;
+  RETURN tot_salary;
+END;
+/
+
+ACCEPT dept_id_prompt PROMPT 'Enter Department No.: ';
+
+DECLARE
+  dept_id NUMBER;
+  total_salary NUMBER;
+BEGIN
+  dept_id := &dept_id_prompt;
+  total_salary := tot_sal(dept_id);
+  DBMS_OUTPUT.PUT_LINE ('Total salary of the given department is: ' || total_salary);
+END;
+/
+
+SQL> @fn2.sql
+
+Function created.
+
+Enter Department No.: 102
+Total salary of the given department is: 145000
+
+PL/SQL procedure successfully completed.
+
+10. Write a row trigger to add the details of new employees in NewEmployee table,
+relieved employees in DelEmployee table and updated employees in ModiEmployee table.
+Trigger need to be fired after the insertion/deletion/updation made with Employee table.
+
